@@ -1,0 +1,32 @@
+{
+  "name": "@wrux/astro-datastar",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Astro integration for Datastar (vendored v1.0.2 bundle) with server helpers and a replace-url plugin",
+  "license": "MIT",
+  "keywords": [
+    "astro",
+    "astro-integration",
+    "datastar",
+    "hypermedia",
+    "sse"
+  ],
+  "files": [
+    "src",
+    "vendor"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts",
+    "./engine": "./src/engine.ts",
+    "./server": "./src/server.ts",
+    "./plugins/*": "./src/plugins/*.ts",
+    "./loading.css": "./src/loading.css"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "astro": "^5.0.0"
+  }
+}

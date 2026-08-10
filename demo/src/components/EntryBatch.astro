@@ -1,0 +1,21 @@
+---
+/** One batch of entries; /api/load-more appends later batches to #entries. */
+import { entries } from '../data/entries';
+
+interface Props {
+  offset: number;
+  limit?: number;
+}
+
+const { offset, limit = 5 } = Astro.props;
+const items = entries.slice(offset, offset + limit);
+---
+
+{
+  items.map((entry) => (
+    <li>
+      <strong>{entry.title}</strong>
+      <span class="hint">{entry.blurb}</span>
+    </li>
+  ))
+}

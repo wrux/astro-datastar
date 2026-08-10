@@ -1,0 +1,22 @@
+---
+/** Combobox option list shared by the page (empty) and /api/suggest. */
+interface Props {
+  matches?: string[];
+}
+
+const { matches = [] } = Astro.props;
+---
+
+<div id="town-suggestions">
+  {
+    matches.map((town) => (
+      <button
+        type="button"
+        data-part="option"
+        data-on:click={`$term = '${town.replace(/'/g, "\\'")}'`}
+      >
+        {town}
+      </button>
+    ))
+  }
+</div>

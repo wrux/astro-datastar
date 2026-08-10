@@ -1,0 +1,21 @@
+/**
+ * Busy-state fade for Datastar request regions.
+ *
+ * Usage: put `ds-busy-fade` on the region that gets replaced, wire
+ * `data-indicator="_loading"` on the triggering element(s) and
+ * `data-attr-aria-busy="$_loading ? 'true' : 'false'"` on the region.
+ */
+.ds-busy-fade {
+  transition: opacity 150ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-busy-fade {
+    transition: none;
+  }
+}
+
+.ds-busy-fade[aria-busy='true'] {
+  opacity: 0.45;
+  pointer-events: none;
+}

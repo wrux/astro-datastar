@@ -1,0 +1,40 @@
+---
+import { experiences } from '../data/experiences';
+
+interface Props {
+  type: string;
+  region: string;
+  destination: string;
+  limit: number;
+}
+
+const { type, region, destination, limit } = Astro.props;
+
+const matches = experiences.filter(
+  (e) =>
+    (!type || e.type === type) &&
+    (!region || e.region === region) &&
+    (!destination || e.destination === destination),
+);
+const shown = matches.slice(0, limit);
+---
+
+<div id="filter-results">
+  <p class="hint">
+    {matches.length} match{matches.length === 1 ? '' : 'es'}
+    {matches.length > shown.length && ` · showing first ${shown.length}`}
+  </p>
+  <ul class="entry-list">
+    {
+      shown.map((e) => (
+        <li>
+          <strong>{e.title}</strong>
+          <span class="hint">
+            {e.type} · {e.destination}, {e.region}
+          </span>
+        </li>
+      ))
+    }
+    {matches.length === 0 && <li class="hint">Nothing matches those filters.</li>}
+  </ul>
+</div>

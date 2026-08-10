@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PluginSource from '../../components/PluginSource.astro';
+---
+
+<Layout title="Collapse & cloak">
+  <p>
+    <code>data-collapse="&lt;expr&gt;"</code> and <code>data-cloak</code> are
+    custom plugins defined in <em>this app</em>
+    (<code>src/datastar/plugins/</code>, loaded via the integration's
+    <code>entrypoint</code> option) on top of the package's
+    <code>engine</code> export — the pattern to copy for your own plugins.
+    Collapse animates height between 0 and auto, sets
+    <code>aria-hidden</code> while collapsed, and respects
+    <code>prefers-reduced-motion</code>.
+  </p>
+
+  <section class="demo" data-signals="{hours: false}">
+    <h2>Opening hours</h2>
+    <button
+      data-on:click="$hours = !$hours"
+      data-attr:aria-expanded="$hours ? 'true' : 'false'"
+    >
+      Opening hours
+    </button>
+    <div data-collapse="$hours" data-cloak>
+      <ul>
+        <li>Mon–Fri: 9:00 – 17:30</li>
+        <li>Sat: 10:00 – 16:00</li>
+        <li>Sun: closed</li>
+      </ul>
+    </div>
+    <pre><code>&lt;button data-on:click="$hours = !$hours"
+        data-attr:aria-expanded="$hours ? 'true' : 'false'"&gt;Opening hours&lt;/button&gt;
+&lt;div data-collapse="$hours" data-cloak&gt;…&lt;/div&gt;</code></pre>
+    <p class="hint">
+      <code>data-cloak</code> (plus the package's <code>cloak.css</code>)
+      hides the panel until the engine applies plugins, so a collapsed panel
+      never flashes open on load.
+    </p>
+    <PluginSource name="collapse" />
+    <PluginSource name="cloak" />
+  </section>
+
+  <section class="demo" data-signals="{faq: 0}">
+    <h2>Accordion (one open at a time)</h2>
+    {
+      [
+        ['What is Datastar?', 'A hypermedia framework: signals in attributes, fragments from the server.'],
+        ['Do I need an island?', 'No — the integration injects one small script site-wide.'],
+        ['Where does state live?', 'In signals on the page, and in whatever your endpoints render.'],
+      ].map(([q, a], i) => (
+        <div>
+          <button
+            data-on:click={`$faq = $faq === ${i + 1} ? 0 : ${i + 1}`}
+            data-attr:aria-expanded={`$faq === ${i + 1} ? 'true' : 'false'`}
+          >
+            {q}
+          </button>
+          <div data-collapse={`$faq === ${i + 1}`} data-cloak>
+            <p>{a}</p>
+          </div>
+        </div>
+      ))
+    }
+  </section>
+</Layout>

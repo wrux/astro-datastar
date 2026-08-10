@@ -1,0 +1,49 @@
+---
+/** Pagination region shared by the page and /api/pagination. */
+import { entries } from '../data/entries';
+
+interface Props {
+  offset: number;
+  limit?: number;
+}
+
+const { offset, limit = 5 } = Astro.props;
+
+const total = entries.length;
+const totalPages = Math.ceil(total / limit);
+const page = Math.floor(offset / limit) + 1;
+const items = entries.slice(offset, offset + limit);
+
+const prevOffset = Math.max(0, offset - limit);
+const nextOffset = offset + limit;
+const hasPrev = offset > 0;
+const hasNext = nextOffset < total;
+---
+
+<div id="pagination">
+  <ul class="entry-list">
+    {
+      items.map((entry) => (
+        <li>
+          <strong>{entry.title}</strong>
+          <span class="hint">{entry.blurb}</span>
+        </li>
+      ))
+    }
+  </ul>
+  <nav class="pager" aria-label="Pagination">
+    <button
+      disabled={!hasPrev}
+      data-on:click={`$offset = ${prevOffset}; @get('/api/pagination')`}
+    >
+      « Previous
+    </button>
+    <p class="hint">Page {page} of {totalPages} · {total} results</p>
+    <button
+      disabled={!hasNext}
+      data-on:click={`$offset = ${nextOffset}; @get('/api/pagination')`}
+    >
+      Next »
+    </button>
+  </nav>
+</div>

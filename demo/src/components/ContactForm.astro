@@ -1,0 +1,88 @@
+---
+/** Contact form shared by the page and /api/contact (pristine, errored, success). */
+export type FieldErrors = Partial<Record<'name' | 'email' | 'message', string[]>>;
+
+interface Props {
+  values?: { name?: string; email?: string; message?: string };
+  errors?: FieldErrors;
+  success?: boolean;
+}
+
+const { values = {}, errors = {}, success = false } = Astro.props;
+
+const field = (name: keyof FieldErrors) => ({
+  invalid: !!errors[name]?.length,
+  errorId: `contact-${name}-error`,
+});
+---
+
+<div id="contact-form">
+  {
+    success ? (
+      <p role="status">
+        <strong>Thanks, {values.name}!</strong> We'll reply to {values.email}.
+      </p>
+    ) : (
+      <form
+        novalidate
+        class="ds-busy-fade"
+        data-on:submit="@post('/api/contact', {contentType: 'form'})"
+        data-indicator="_sending"
+        data-attr:aria-busy="$_sending ? 'true' : 'false'"
+      >
+        <p>
+          <label for="cname">Name</label>
+          <input
+            id="cname"
+            name="name"
+            type="text"
+            value={values.name}
+            aria-invalid={field('name').invalid ? 'true' : undefined}
+            aria-describedby={field('name').invalid ? field('name').errorId : undefined}
+          />
+          {field('name').invalid && (
+            <span class="field-error" id={field('name').errorId}>
+              {errors.name![0]}
+            </span>
+          )}
+        </p>
+        <p>
+          <label for="cemail">Email</label>
+          <input
+            id="cemail"
+            name="email"
+            type="email"
+            value={values.email}
+            aria-invalid={field('email').invalid ? 'true' : undefined}
+            aria-describedby={field('email').invalid ? field('email').errorId : undefined}
+          />
+          {field('email').invalid && (
+            <span class="field-error" id={field('email').errorId}>
+              {errors.email![0]}
+            </span>
+          )}
+        </p>
+        <p>
+          <label for="cmsg">Message</label>
+          <textarea
+            id="cmsg"
+            name="message"
+            rows="3"
+            aria-invalid={field('message').invalid ? 'true' : undefined}
+            aria-describedby={field('message').invalid ? field('message').errorId : undefined}>{values.message}</textarea>
+          {field('message').invalid && (
+            <span class="field-error" id={field('message').errorId}>
+              {errors.message![0]}
+            </span>
+          )}
+        </p>
+        <button
+          data-attr:disabled="$_sending"
+          data-text="$_sending ? 'Sending…' : 'Send'"
+        >
+          Send
+        </button>
+      </form>
+    )
+  }
+</div>

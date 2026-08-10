@@ -1,0 +1,62 @@
+---
+/** Filter selects; a region change re-renders this block with fresh destinations. */
+import { regions, types } from '../data/experiences';
+
+interface Props {
+  region: string;
+}
+
+const { region } = Astro.props;
+const destinations = region ? (regions[region] ?? []) : [];
+---
+
+<div id="filter-controls" class="filter-grid">
+  <div>
+    <label for="f-type">Experience type</label>
+    <select
+      id="f-type"
+      data-bind:type
+      data-on:change="@get('/api/filters-results')"
+    >
+      <option value="">Any type</option>
+      {types.map((t) => <option value={t}>{t}</option>)}
+    </select>
+  </div>
+  <div>
+    <label for="f-region">Region</label>
+    <select
+      id="f-region"
+      data-bind:region
+      data-on:change="$destination = ''; @get('/api/filters')"
+    >
+      <option value="">Any region</option>
+      {Object.keys(regions).map((r) => <option value={r}>{r}</option>)}
+    </select>
+  </div>
+  <div>
+    <label for="f-destination">Destination</label>
+    <select
+      id="f-destination"
+      data-bind:destination
+      data-on:change="@get('/api/filters-results')"
+      disabled={destinations.length === 0}
+    >
+      <option value="">
+        {destinations.length ? 'Any destination' : 'Pick a region first'}
+      </option>
+      {destinations.map((d) => <option value={d}>{d}</option>)}
+    </select>
+  </div>
+  <div>
+    <label for="f-limit">Show</label>
+    <select
+      id="f-limit"
+      data-bind:limit
+      data-on:change="@get('/api/filters-results')"
+    >
+      <option value="5">5 results</option>
+      <option value="10">10 results</option>
+      <option value="20">20 results</option>
+    </select>
+  </div>
+</div>

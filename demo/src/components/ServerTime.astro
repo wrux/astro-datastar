@@ -1,0 +1,20 @@
+---
+/** Server-time fragment shared by the polling page and /api/time. */
+interface Props {
+  time?: string;
+}
+
+const { time } = Astro.props;
+---
+
+{
+  time ? (
+    <div id="server-time">
+      Server time: <strong>{time}</strong>
+    </div>
+  ) : (
+    <div id="server-time" class="hint">
+      Loading server time…
+    </div>
+  )
+}

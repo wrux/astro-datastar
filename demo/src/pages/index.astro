@@ -1,0 +1,85 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Astro + Datastar">
+  <p>
+    <code>@wrux/astro-datastar</code> is an Astro integration for
+    <a href="https://data-star.dev">Datastar</a> v1.0.2 (vendored bundle — no
+    CDN request), plus server helpers for answering Datastar requests from
+    Astro endpoints and a minimal <code>data-replace-url</code> plugin.
+  </p>
+
+  <h2>Setup</h2>
+  <pre><code>// astro.config.mjs
+import &lbrace; defineConfig &rbrace; from 'astro/config';
+import datastar from '@wrux/astro-datastar';
+
+export default defineConfig(&lbrace;
+  integrations: [datastar()],
+&rbrace;);</code></pre>
+
+  <p>
+    That injects the client entrypoint (the full official plugin set +
+    replace-url) into every page. Two options:
+  </p>
+  <ul>
+    <li>
+      <code>inject: false</code> — keep pages JS-free by default; opt in per
+      page with
+      <code>&lt;script&gt; import '@wrux/astro-datastar/client'; &lt;/script&gt;</code>.
+    </li>
+    <li>
+      <code>entrypoint: '/src/datastar/index.ts'</code> — point at an
+      app-local module to control the plugin set. This demo does exactly
+      that: its entrypoint loads the package client plus three app-local
+      plugins (cloak, collapse, combobox) written against the package's
+      <code>engine</code> export.
+    </li>
+  </ul>
+
+  <h2>What Datastar gives you</h2>
+  <p>
+    Reactive <em>signals</em> declared in HTML attributes
+    (<code>data-signals</code>, <code>data-bind:*</code>,
+    <code>data-text</code>, <code>data-show</code>…) plus backend actions
+    (<code>@get</code>, <code>@post</code>…) whose HTML responses are morphed
+    into the page by element id. No client framework, no islands — the server
+    renders fragments, Datastar patches them in.
+  </p>
+
+  <h2>Plugins</h2>
+  <ul>
+    <li>
+      <code>data-replace-url="&lt;expr&gt;"</code> — ships with the package;
+      syncs the address bar to signal state (upstream moved theirs to Pro;
+      this is a tiny equivalent).
+    </li>
+    <li>
+      <code>data-collapse</code>, <code>data-cloak</code>,
+      <code>data-combobox</code> — defined in this demo app
+      (<code>src/datastar/plugins/</code>) as examples of writing your own;
+      each demo page shows the plugin source.
+    </li>
+  </ul>
+
+  <h2>Server helpers</h2>
+  <pre><code>import &lbrace; readSignals, html &rbrace; from '@wrux/astro-datastar/server';
+
+export const prerender = false;
+
+export const GET: APIRoute = async (&lbrace; request &rbrace;) =&gt; &lbrace;
+  const &lbrace; q &rbrace; = await readSignals&lt;&lbrace; q: string &rbrace;&gt;(request);
+  return html(`&lt;ul id="results"&gt;…&lt;/ul&gt;`);
+&rbrace;;</code></pre>
+  <p>
+    For anything a plain HTML morph can't express — patching signals,
+    append/remove modes, streaming — build SSE events with
+    <code>patchElements()</code> / <code>patchSignals()</code> /
+    <code>removeElements()</code> and answer with <code>sse(…)</code> or a
+    long-lived <code>sseStream(run)</code>. See the
+    <a href="/examples/stream">streaming example</a>.
+  </p>
+
+  <p class="hint">Pick an example from the sidebar — each shows its source.</p>
+</Layout>

@@ -1,0 +1,10 @@
+---
+/** Streaming job log: empty <ul> reset, or one appended line. */
+interface Props {
+  line?: string;
+}
+
+const { line } = Astro.props;
+---
+
+{line ? <li>{line}</li> : <ul id="job-log"></ul>}

@@ -1,0 +1,52 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import FilterControls from '../../components/FilterControls.astro';
+import FilterResults from '../../components/FilterResults.astro';
+---
+
+<Layout title="Filters">
+  <p>
+    Four selects bind signals. Type, destination, and limit changes fetch
+    <code>/api/filters-results</code> (results only). A region change resets
+    <code>$destination</code> and fetches <code>/api/filters</code>, which
+    patches <em>both</em> the controls (fresh destination options) and the
+    results in one SSE response.
+  </p>
+
+  <section
+    class="demo"
+    data-signals="{type: '', region: '', destination: '', limit: '5'}"
+  >
+    <h2>Find an experience</h2>
+    <FilterControls region="" />
+    <FilterResults type="" region="" destination="" limit={5} />
+    <pre><code>&lt;!-- controls (FilterControls.astro) --&gt;
+&lt;select data-bind:type data-on:change="@get('/api/filters-results')"&gt;…&lt;/select&gt;
+&lt;select data-bind:region data-on:change="$destination = ''; @get('/api/filters')"&gt;…&lt;/select&gt;
+&lt;select data-bind:destination data-on:change="@get('/api/filters-results')"&gt;…&lt;/select&gt;
+&lt;select data-bind:limit data-on:change="@get('/api/filters-results')"&gt;…&lt;/select&gt;
+
+&lt;!-- /api/filters (region changed → destinations are stale) --&gt;
+return sse(patchElements(controls), patchElements(results));
+
+&lt;!-- /api/filters-results --&gt;
+return html(await container.renderToString(FilterResults, &lbrace; props: signals &rbrace;));</code></pre>
+  </section>
+
+  <style>
+    :global(.filter-grid) {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    :global(.filter-grid select) {
+      font: inherit;
+      width: 100%;
+      padding: 0.4rem 0.5rem;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--panel);
+    }
+  </style>
+</Layout>

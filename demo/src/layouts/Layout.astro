@@ -1,0 +1,53 @@
+---
+import '@wrux/astro-datastar/loading.css';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+
+const nav = [
+  { href: '/', label: 'Setup' },
+  { href: '/examples/signals', label: 'Signals & bindings' },
+  { href: '/examples/collapse', label: 'Collapse & cloak' },
+  { href: '/examples/active-search', label: 'Active search' },
+  { href: '/examples/pagination', label: 'Pagination' },
+  { href: '/examples/load-more', label: 'Load more' },
+  { href: '/examples/filters', label: 'Filters' },
+  { href: '/examples/form', label: 'Form validation' },
+  { href: '/examples/polling', label: 'Polling' },
+  { href: '/examples/stream', label: 'SSE streaming' },
+  { href: '/examples/combobox', label: 'Combobox' },
+];
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · astro-datastar</title>
+  </head>
+  <body>
+    <div class="shell">
+      <aside>
+        <p class="brand"><a href="/">astro‑datastar</a></p>
+        <nav>
+          {
+            nav.map((item) => (
+              <a href={item.href} aria-current={path === item.href ? 'page' : undefined}>
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+      </aside>
+      <main>
+        <h1>{title}</h1>
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>

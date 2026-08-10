@@ -1,0 +1,14 @@
+{
+  "name": "astro-datastar-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "demo"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace demo",
+    "build": "npm run build --workspace demo",
+    "preview": "npm run preview --workspace demo"
+  }
+}
