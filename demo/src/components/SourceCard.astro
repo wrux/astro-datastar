@@ -1,0 +1,55 @@
+---
+/** Heading + full highlighted source of a demo file (no card wrapper). */
+import type { BundledLanguage } from 'shiki';
+import CodeBlock from './CodeBlock.astro';
+
+interface Props {
+  /** Repo path from the workspace root's `demo/`, e.g. "src/pages/api/pagination.ts". */
+  file: string;
+  /** Short heading, e.g. "The endpoint". */
+  label?: string;
+}
+
+const { file, label = 'Source' } = Astro.props;
+
+// Bundle the real sources so the docs can never drift from the code.
+// (Vite requires the options as inline literals.)
+const sources: Record<string, string> = {
+  ...import.meta.glob<string>('../pages/**/*.ts', { query: '?raw', import: 'default', eager: true }),
+  ...import.meta.glob<string>('./**/*.astro', { query: '?raw', import: 'default', eager: true }),
+  ...import.meta.glob<string>('../datastar/**/*.ts', { query: '?raw', import: 'default', eager: true }),
+  ...import.meta.glob<string>('../data/*.ts', { query: '?raw', import: 'default', eager: true }),
+  ...import.meta.glob<string>('../../../packages/astro-datastar/src/plugins/*.ts', { query: '?raw', import: 'default', eager: true }),
+};
+
+// Keys are relative to this file: '../pages/…', './X.astro' for siblings,
+// '../../../packages/…' for the package's own plugins.
+const canonical = (key: string) =>
+  key
+    .replace(/^\.\.\/\.\.\/\.\.\//, '')
+    .replace(/^\.\.\//, 'src/')
+    .replace(/^\.\//, 'src/components/');
+
+const entry = Object.entries(sources).find(([path]) => canonical(path) === file);
+if (!entry) throw new Error(`Unknown source file: ${file}`);
+const source = entry[1].trim();
+const lang: BundledLanguage = file.endsWith('.astro') ? 'astro' : 'ts';
+---
+
+<section class="source-card">
+  <h2>{label}</h2>
+  <CodeBlock code={source} lang={lang} title={file} />
+</section>
+
+<style>
+  .source-card {
+    margin: 2rem 0;
+  }
+  .source-card h2 {
+    font-size: 1.05rem;
+    margin: 0 0 0.5rem;
+  }
+  .source-card :global(pre) {
+    max-height: 30rem;
+  }
+</style>

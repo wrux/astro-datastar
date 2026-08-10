@@ -1,0 +1,41 @@
+---
+layout: ../../layouts/Layout.astro
+title: Writing Plugins
+---
+
+import CodeBlock from '../../components/CodeBlock.astro';
+import replaceUrlSource from '../../../../packages/astro-datastar/src/plugins/replace-url.ts?raw';
+
+The package's `engine` export re-exposes the vendored Datastar plugin API —
+`attribute()`, `action()`, `effect()`, `signal()` and friends. A custom
+attribute plugin looks like this:
+
+```ts
+import { attribute, effect } from '@wrux/astro-datastar/engine';
+
+attribute({
+  name: 'my-plugin', // matched as data-my-plugin
+  returnsValue: true, // the attribute value is an expression
+  apply({ el, rx }) {
+    // rx() evaluates the attribute expression; effect() re-runs when
+    // signals the expression reads change.
+    return effect(() => {
+      const value = rx();
+      // …update el…
+    });
+  },
+});
+```
+
+Register plugins by importing their modules from your app-local entrypoint
+(see [Integration Options](/docs/options)). This site's own plugins are
+working references:
+
+- [collapse](/examples/plugins/collapse) — an `effect()`-driven animation.
+- [cloak](/examples/plugins/cloak) — a boot-time attribute.
+- [combobox](/examples/plugins/combobox) — a larger behavioural plugin with
+  keyboard navigation and live DOM lookups.
+
+The package's own replace-url plugin is the smallest full example:
+
+<CodeBlock code={replaceUrlSource} lang="ts" title="packages/astro-datastar/src/plugins/replace-url.ts" />

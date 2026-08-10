@@ -1,0 +1,29 @@
+---
+layout: ../../../layouts/Layout.astro
+title: Collapse
+---
+
+import CollapseDemo from '../../../components/demos/CollapseDemo.astro';
+import AccordionDemo from '../../../components/demos/AccordionDemo.astro';
+import SourceCard from '../../../components/SourceCard.astro';
+
+`data-collapse="<expr>"` is a custom plugin defined in *this app*
+(`src/datastar/plugins/collapse.ts`, loaded via the integration's
+`entrypoint` option) on top of the package's `engine` export. It animates
+height between 0 and auto, sets `aria-hidden` while collapsed, and
+respects `prefers-reduced-motion`. Pair it with
+[`data-cloak`](/examples/plugins/cloak) so a collapsed panel never flashes
+open on load.
+
+<CollapseDemo />
+
+```html
+<button data-on:click="$hours = !$hours"
+        data-attr:aria-expanded="$hours ? 'true' : 'false'">Opening hours</button>
+<div data-collapse="$hours" data-cloak>…</div>
+```
+
+<AccordionDemo />
+
+<SourceCard label="The accordion demo" file="src/components/demos/AccordionDemo.astro" />
+<SourceCard label="The plugin" file="src/datastar/plugins/collapse.ts" />

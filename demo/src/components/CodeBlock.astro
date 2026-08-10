@@ -1,0 +1,42 @@
+---
+/** Shiki-highlighted code block with an optional filename/title bar. */
+import { Code } from 'astro:components';
+import type { BundledLanguage } from 'shiki';
+
+interface Props {
+  code: string;
+  lang?: BundledLanguage;
+  title?: string;
+}
+
+const { code, lang = 'ts', title } = Astro.props;
+---
+
+<figure class="code-block">
+  {title && <figcaption>{title}</figcaption>}
+  <Code code={code.trim()} lang={lang} theme="github-dark" />
+</figure>
+
+<style>
+  .code-block {
+    margin: 1rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #2a2a3a;
+  }
+  .code-block figcaption {
+    background: #1b1b28;
+    color: #9a9ab0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.75rem;
+    padding: 0.45rem 1rem;
+    border-bottom: 1px solid #2a2a3a;
+  }
+  .code-block :global(pre) {
+    margin: 0;
+    padding: 0.875rem 1rem;
+    font-size: 0.825rem;
+    line-height: 1.55;
+    overflow-x: auto;
+  }
+</style>

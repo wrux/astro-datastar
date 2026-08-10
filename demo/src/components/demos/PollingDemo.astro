@@ -1,0 +1,14 @@
+---
+/** Polling demo: fetch on load, re-fetch every 5s. */
+import ServerTime from '../ServerTime.astro';
+---
+
+<section class="demo">
+  <h2>Server clock</h2>
+  <div
+    data-init="@get('/api/time')"
+    data-on-interval__duration.5s="@get('/api/time')"
+  >
+    <ServerTime />
+  </div>
+</section>

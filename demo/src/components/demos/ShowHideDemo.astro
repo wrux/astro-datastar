@@ -1,0 +1,21 @@
+---
+/** Signals & bindings: show/hide + attributes. */
+---
+
+<section class="demo" data-signals="{open: false}">
+  <h2>Show / hide + attributes</h2>
+  <div class="row">
+    <button
+      data-on:click="$open = !$open"
+      data-attr:aria-expanded="$open ? 'true' : 'false'"
+      data-text="$open ? 'Hide details' : 'Show details'"
+    >
+      Show details
+    </button>
+  </div>
+  <p data-show="$open" data-cloak>
+    Revealed by <code>data-show="$open"</code>. The <code>data-cloak</code>
+    attribute keeps this hidden until Datastar boots, so there is no flash
+    of un-hidden content.
+  </p>
+</section>

@@ -1,0 +1,60 @@
+---
+layout: ../../layouts/Layout.astro
+title: Server Responses
+---
+
+## Plain HTML (the common case)
+
+With Datastar 1.0, top-level elements in a `text/html` response are morphed
+into the page by id — a fragment is just a rendered partial. Render the
+*same Astro component* the page used (via the Container API) so the UI is
+written once:
+
+```ts
+import type { APIRoute } from 'astro';
+import { experimental_AstroContainer as AstroContainer } from 'astro/container';
+import { html, readSignals } from '@wrux/astro-datastar/server';
+import SearchResults from '../../components/SearchResults.astro';
+
+export const prerender = false;
+
+export const GET: APIRoute = async ({ request }) => {
+  const { q } = await readSignals<{ q: string }>(request);
+  const container = await AstroContainer.create();
+  return html(await container.renderToString(SearchResults, { props: { q } }));
+};
+```
+
+## SSE events
+
+For anything a plain morph can't express — patching signals, selector
+targeting, append/prepend/remove modes — build events with
+`patchElements()`, `patchSignals()`, and `removeElements()`, and answer
+with `sse()`:
+
+```ts
+import { patchElements, patchSignals, removeElements, sse } from '@wrux/astro-datastar/server';
+
+return sse(
+  patchElements(batch, { selector: '#entries', mode: 'append' }),
+  patchSignals({ offset: nextOffset }),
+  removeElements('#load-more-button'),
+);
+```
+
+## Streaming
+
+`sseStream()` keeps one response open and sends events as work happens —
+see the [streaming example](/examples/stream):
+
+```ts
+import { patchElements, patchSignals, sseStream } from '@wrux/astro-datastar/server';
+
+return sseStream(async (stream) => {
+  for (const [i, step] of steps.entries()) {
+    await doWork(step);
+    stream.send(patchSignals({ progress: (i + 1) / steps.length }));
+    stream.send(patchElements(line, { selector: '#log', mode: 'append' }));
+  }
+});
+```

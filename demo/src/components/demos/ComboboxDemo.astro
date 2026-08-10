@@ -1,0 +1,55 @@
+---
+/** data-combobox: APG combobox with server-rendered options. */
+import SuggestionOptions from '../SuggestionOptions.astro';
+---
+
+<section class="demo" data-signals="{term: ''}">
+  <h2>Town lookup</h2>
+  <div data-combobox class="combobox">
+    <form>
+      <label for="town">Town</label>
+      <input
+        id="town"
+        type="text"
+        autocomplete="off"
+        data-part="input"
+        data-bind:term
+        data-on:input__debounce.200ms="@get('/api/suggest')"
+      />
+    </form>
+    <div data-part="popup" hidden>
+      <SuggestionOptions />
+    </div>
+  </div>
+</section>
+
+<style>
+  .combobox {
+    position: relative;
+    max-width: 24rem;
+  }
+  .combobox [data-part='popup'] {
+    position: absolute;
+    inset-inline: 0;
+    z-index: 10;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.08);
+    overflow: hidden;
+  }
+  .combobox :global([data-part='option']) {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    padding: 0.45rem 0.75rem;
+  }
+  .combobox :global([data-part='option'][data-active]),
+  .combobox :global([data-part='option']:hover) {
+    background: var(--bg);
+    color: var(--accent);
+  }
+</style>

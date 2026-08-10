@@ -1,0 +1,24 @@
+---
+layout: ../../layouts/Layout.astro
+title: Active Search
+---
+
+import ActiveSearchDemo from '../../components/demos/ActiveSearchDemo.astro';
+import SourceCard from '../../components/SourceCard.astro';
+
+export const prerender = false;
+
+Typing debounces 300 ms, then `@get('/api/search')` sends the signals; the
+endpoint re-renders the same `<SearchResults/>` Astro component (via the
+Container API) and Datastar morphs it in by id. `data-replace-url` keeps
+the address bar shareable, and the indicator + busy fade cover slow
+responses. A `$_typing` signal fades the stale list while you're still
+typing — the client only sets it; the server clears it with a signal patch
+in the same response that delivers the fresh list.
+
+<ActiveSearchDemo />
+
+<SourceCard label="The demo" file="src/components/demos/ActiveSearchDemo.astro" />
+<SourceCard label="The shared component" file="src/components/SearchResults.astro" />
+<SourceCard label="The endpoint" file="src/pages/api/search.ts" />
+<SourceCard label="The plugin" file="packages/astro-datastar/src/plugins/replace-url.ts" />

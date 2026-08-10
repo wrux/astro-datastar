@@ -1,0 +1,18 @@
+---
+/** Re-fetch by convention: dispatch a bubbling CustomEvent at a region. */
+---
+
+<section class="demo">
+  <h2>Re-fetch by convention</h2>
+  <p>
+    <code>data-on:*</code> listens for any DOM event, so re-fetching is a
+    convention rather than a plugin: give a region
+    <code>data-on:refetch="@get(…)"</code> and dispatch a bubbling
+    <code>CustomEvent('refetch')</code> at it from anywhere.
+  </p>
+  <div data-on:refetch="@get('/api/time')">
+    <button data-on:click="evt.target.dispatchEvent(new CustomEvent('refetch', {bubbles: true}))">
+      Refresh now
+    </button>
+  </div>
+</section>

@@ -1,0 +1,45 @@
+---
+layout: ../../layouts/Layout.astro
+title: Signals & Bindings
+---
+
+import CounterDemo from '../../components/demos/CounterDemo.astro';
+import GreetingDemo from '../../components/demos/GreetingDemo.astro';
+import ShowHideDemo from '../../components/demos/ShowHideDemo.astro';
+import TabsDemo from '../../components/demos/TabsDemo.astro';
+
+Everything here is plain HTML — no endpoint involved. Signals live in
+`data-signals`, expressions reference them with `$name`.
+
+<CounterDemo />
+
+```html
+<section data-signals="{count: 0}">
+  <button data-on:click="$count--">−</button>
+  <strong data-text="$count">0</strong>
+  <button data-on:click="$count++">+</button>
+</section>
+```
+
+<GreetingDemo />
+
+```html
+<div data-computed:greeting="$name ? `Hello, ${$name}!` : 'Type your name…'">
+  <input data-bind:name />
+  <p data-text="$greeting"></p>
+</div>
+```
+
+<ShowHideDemo />
+
+```html
+<button data-on:click="$open = !$open"
+        data-attr:aria-expanded="$open ? 'true' : 'false'">…</button>
+<p data-show="$open" data-cloak>…</p>
+```
+
+<TabsDemo />
+
+```html
+<button data-on:click="$tab = 'a'" data-class:active="$tab === 'a'">Tab A</button>
+```

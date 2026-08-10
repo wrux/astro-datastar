@@ -1,0 +1,68 @@
+---
+layout: ../../layouts/Layout.astro
+title: Validation
+---
+
+Pass any [Standard Schema](https://standardschema.dev) validator (Zod
+≥3.24, Valibot, ArkType…) as the second argument to `readSignals()` to
+validate at runtime and infer the type from the schema. Astro already ships
+Zod as `astro/zod`, so this needs no extra dependency. Failures throw
+`SignalsValidationError`, which carries the issues and a `.response()`
+shortcut for a 422:
+
+```ts
+import { z } from 'astro/zod';
+import { readSignals, SignalsValidationError } from '@wrux/astro-datastar/server';
+
+const signals = z.object({ q: z.string().max(100).default('') });
+
+export const GET: APIRoute = async ({ request }) => {
+  try {
+    const { q } = await readSignals(request, signals); // q: string
+    // …
+  } catch (err) {
+    if (err instanceof SignalsValidationError) return err.response(); // 422
+    throw err;
+  }
+};
+```
+
+## Rendering failures into the UI
+
+A bare 422 leaves the page silently stale. For user-correctable input,
+catch the error and render it into the fragment you'd normally return — see
+[active search](/examples/active-search):
+
+```ts
+let q = '';
+let error: string | undefined;
+try {
+  ({ q } = await readSignals(request, signals));
+} catch (err) {
+  if (!(err instanceof SignalsValidationError)) throw err;
+  error = err.issues.map((i) => i.message).join('; ');
+}
+// render the error into the fragment the page already shows
+```
+
+## Per-field form errors
+
+For forms, read raw and use `safeParse` so you can re-render the form with
+the submitted values and field-level messages — see
+[form validation](/examples/form):
+
+```ts
+const contact = z.object({
+  name: z.string().trim().min(2, 'Please give your name (at least 2 characters).'),
+  email: z.string().trim().email('That email address doesn’t look right.'),
+});
+
+const raw = await readSignals(request); // raw, so values survive
+const result = contact.safeParse(raw);
+if (!result.success) {
+  return html(await container.renderToString(ContactForm, { props: {
+    values: raw,
+    errors: result.error.flatten().fieldErrors,
+  } }));
+}
+```

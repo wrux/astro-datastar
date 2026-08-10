@@ -1,0 +1,36 @@
+---
+layout: ../../../layouts/Layout.astro
+title: Combobox
+---
+
+import ComboboxDemo from '../../../components/demos/ComboboxDemo.astro';
+import SourceCard from '../../../components/SourceCard.astro';
+
+`data-combobox` is a custom plugin defined in this app
+(`src/datastar/plugins/combobox.ts`). It wires an input to a
+server-rendered listbox following the APG combobox pattern:
+ArrowUp/ArrowDown move the active option via `aria-activedescendant`,
+Enter activates it, Escape and click-outside close. Options come from
+`@get('/api/suggest')` on each (debounced) keystroke, so the plugin looks
+them up live rather than capturing once.
+
+<ComboboxDemo />
+
+```html
+<div data-combobox>
+  <form>
+    <input data-part="input" data-bind:term
+           data-on:input__debounce.200ms="@get('/api/suggest')" />
+  </form>
+  <div data-part="popup" hidden>
+    <div id="town-suggestions">
+      <!-- server renders: -->
+      <button data-part="option" data-on:click="$term = 'Bristol'">Bristol</button>
+    </div>
+  </div>
+</div>
+```
+
+<SourceCard label="The plugin" file="src/datastar/plugins/combobox.ts" />
+<SourceCard label="The shared component" file="src/components/SuggestionOptions.astro" />
+<SourceCard label="The endpoint" file="src/pages/api/suggest.ts" />

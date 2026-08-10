@@ -1,0 +1,41 @@
+---
+layout: ../../layouts/Layout.astro
+title: Integration Options
+---
+
+## `inject`
+
+By default the client entrypoint is injected into every page. Set
+`inject: false` to keep pages JS-free by default and opt in per page:
+
+```js
+// astro.config.mjs
+integrations: [datastar({ inject: false })],
+```
+
+```astro
+<script>
+  import '@wrux/astro-datastar/client';
+</script>
+```
+
+## `entrypoint`
+
+Point `entrypoint` at an app-local module to control the plugin set — load
+the package client (or just the engine) plus your own plugins. This site
+does exactly that for its [cloak, collapse](/examples/plugins/collapse) and
+[combobox](/examples/plugins/combobox) plugins:
+
+```js
+// astro.config.mjs
+integrations: [datastar({ entrypoint: '/src/datastar/index.ts' })],
+```
+
+```ts
+// src/datastar/index.ts
+import '@wrux/astro-datastar/client';
+import './plugins/my-plugin';
+```
+
+See [Writing Plugins](/docs/writing-plugins) for what goes in a plugin
+module.

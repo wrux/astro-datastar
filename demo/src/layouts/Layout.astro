@@ -1,53 +1,110 @@
 ---
+import { Icon } from 'astro-icon/components';
 import '@wrux/astro-datastar/loading.css';
 import '../styles/global.css';
+import { breadcrumb, nav } from '../nav';
 
 interface Props {
-  title: string;
+  title?: string;
+  /** Set when used as an MDX `layout`. */
+  frontmatter?: { title: string };
 }
 
-const { title } = Astro.props;
-
-const nav = [
-  { href: '/', label: 'Setup' },
-  { href: '/examples/signals', label: 'Signals & bindings' },
-  { href: '/examples/collapse', label: 'Collapse & cloak' },
-  { href: '/examples/active-search', label: 'Active search' },
-  { href: '/examples/pagination', label: 'Pagination' },
-  { href: '/examples/load-more', label: 'Load more' },
-  { href: '/examples/filters', label: 'Filters' },
-  { href: '/examples/form', label: 'Form validation' },
-  { href: '/examples/polling', label: 'Polling' },
-  { href: '/examples/stream', label: 'SSE streaming' },
-  { href: '/examples/combobox', label: 'Combobox' },
-];
+const title = Astro.props.title ?? Astro.props.frontmatter?.title ?? '';
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const crumbs = breadcrumb(path);
+
+const externalLinks = [
+  { href: 'https://github.com/wrux/astro-datastar', label: 'GitHub', icon: 'lucide:github' },
+  { href: 'https://data-star.dev', label: 'Datastar', icon: 'lucide:external-link' },
+  { href: 'https://astro.build', label: 'Astro', icon: 'lucide:external-link' },
+];
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} · astro-datastar</title>
+    <title>{title} · @wrux/astro-datastar</title>
   </head>
   <body>
-    <div class="shell">
-      <aside>
+    <!-- _nav collapses the sidebar on desktop; _drawer opens it on mobile. -->
+    <div class="shell" data-signals="{_nav: true, _drawer: false}">
+      <div
+        class="backdrop"
+        data-show="$_drawer"
+        data-cloak
+        data-on:click="$_drawer = false"
+      >
+      </div>
+      <aside data-class:collapsed="!$_nav" data-class:open="$_drawer">
         <p class="brand"><a href="/">astro‑datastar</a></p>
-        <nav>
+        <nav aria-label="Site">
           {
-            nav.map((item) => (
-              <a href={item.href} aria-current={path === item.href ? 'page' : undefined}>
-                {item.label}
+            nav.map((group) => (
+              <details open>
+                <summary>
+                  {group.label}
+                  <Icon name="lucide:chevron-down" class="summary-chevron" aria-hidden="true" />
+                </summary>
+                <ul>
+                  {group.items.map((item) => (
+                    <li>
+                      <a
+                        href={item.href}
+                        aria-current={path === item.href ? 'page' : undefined}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            ))
+          }
+        </nav>
+        <nav class="external-links" aria-label="External links">
+          {
+            externalLinks.map((link) => (
+              <a href={link.href}>
+                <Icon name={link.icon} aria-hidden="true" />
+                {link.label}
               </a>
             ))
           }
         </nav>
       </aside>
-      <main>
-        <h1>{title}</h1>
-        <slot />
-      </main>
+      <div class="content">
+        <header>
+          <button
+            class="nav-toggle"
+            aria-label="Toggle sidebar"
+            data-on:click="window.matchMedia('(max-width: 900px)').matches ? $_drawer = !$_drawer : $_nav = !$_nav"
+            data-attr:aria-expanded="($_nav || $_drawer) ? 'true' : 'false'"
+          >
+            <Icon name="lucide:panel-left" aria-hidden="true" />
+          </button>
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol>
+              {
+                crumbs.map((crumb, i) => (
+                  <li>
+                    {i < crumbs.length - 1 ? (
+                      <a href={crumb.href}>{crumb.label}</a>
+                    ) : (
+                      <span aria-current="page">{crumb.label}</span>
+                    )}
+                  </li>
+                ))
+              }
+            </ol>
+          </nav>
+        </header>
+        <main>
+          <h1>{title}</h1>
+          <slot />
+        </main>
+      </div>
     </div>
   </body>
 </html>

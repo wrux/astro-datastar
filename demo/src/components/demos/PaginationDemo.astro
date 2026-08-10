@@ -1,0 +1,19 @@
+---
+/** Pagination demo. Deep link: ?page=… server-renders that page. */
+import PaginatedEntries from '../PaginatedEntries.astro';
+import { entries } from '../../data/entries';
+
+const LIMIT = 5;
+const maxOffset = (Math.ceil(entries.length / LIMIT) - 1) * LIMIT;
+const page = Number(Astro.url.searchParams.get('page')) || 1;
+const offset = Math.min(Math.max(0, (page - 1) * LIMIT), maxOffset);
+---
+
+<section
+  class="demo"
+  data-signals={`{offset: ${offset}}`}
+  data-replace-url={`'/examples/pagination' + ($offset ? '?page=' + ($offset / ${LIMIT} + 1) : '')`}
+>
+  <h2>Walks</h2>
+  <PaginatedEntries offset={offset} />
+</section>

@@ -1,0 +1,17 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import IndexGrid from '../../../components/IndexGrid.astro';
+import { nav } from '../../../nav';
+
+const plugins = nav.find((g) => g.label === 'Plugin Examples')!;
+---
+
+<Layout title="Plugin Examples">
+  <p>
+    Custom Datastar plugins written in this app on the package's
+    <code>engine</code> export, registered via the integration's
+    <code>entrypoint</code> option — see
+    <a href="/docs/writing-plugins">Writing Plugins</a>.
+  </p>
+  <IndexGrid items={plugins.items} />
+</Layout>

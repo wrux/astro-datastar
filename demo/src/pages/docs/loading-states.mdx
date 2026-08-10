@@ -1,0 +1,26 @@
+---
+layout: ../../layouts/Layout.astro
+title: Loading States
+---
+
+Import `@wrux/astro-datastar/loading.css` once, then:
+
+- `data-indicator="_loading"` on the element that *initiates* the request —
+  it sets the signal to `true` while a request is in flight. (On a
+  form-submit action, that's the `<form>`, not the button.)
+- `ds-busy-fade` + `data-attr:aria-busy` on the region the response
+  replaces — it fades and ignores pointer events while busy.
+
+```html
+<input data-bind:q
+       data-on:input__debounce.300ms="@get('/api/search')"
+       data-indicator="_searching" />
+
+<div class="ds-busy-fade"
+     data-attr:aria-busy="$_searching ? 'true' : 'false'">
+  <ul id="results">…</ul>
+</div>
+```
+
+See it live on [active search](/examples/active-search) and the
+[form](/examples/form) (button label swap + fade).

@@ -1,0 +1,19 @@
+---
+layout: ../../layouts/Layout.astro
+title: Filters
+---
+
+import FiltersDemo from '../../components/demos/FiltersDemo.astro';
+import SourceCard from '../../components/SourceCard.astro';
+
+Four selects bind signals. Type, destination, and limit changes fetch
+`/api/filters-results` (results only). A region change resets
+`$destination` and fetches `/api/filters`, which patches *both* the
+controls (fresh destination options) and the results in one SSE response.
+
+<FiltersDemo />
+
+<SourceCard label="The controls" file="src/components/FilterControls.astro" />
+<SourceCard label="The results" file="src/components/FilterResults.astro" />
+<SourceCard label="The region endpoint" file="src/pages/api/filters.ts" />
+<SourceCard label="The results endpoint" file="src/pages/api/filters-results.ts" />

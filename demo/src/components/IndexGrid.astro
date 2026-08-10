@@ -1,0 +1,71 @@
+---
+/** Link-card grid for section index pages, driven by nav data. */
+import { Icon } from 'astro-icon/components';
+import type { NavItem } from '../nav';
+
+interface Props {
+  items: NavItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="index-grid">
+  {
+    items.map((item) => (
+      <li>
+        <a href={item.href}>
+          <span class="index-label">
+            {item.label}
+            <Icon name="lucide:arrow-right" aria-hidden="true" />
+          </span>
+          {item.description && <span class="index-desc">{item.description}</span>}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .index-grid {
+    list-style: none;
+    margin: 1.5rem 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 0.75rem;
+  }
+  .index-grid a {
+    display: grid;
+    gap: 0.3rem;
+    height: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    text-decoration: none;
+    color: inherit;
+  }
+  .index-grid a:hover {
+    border-color: var(--accent);
+  }
+  .index-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-weight: 600;
+  }
+  .index-label svg {
+    color: var(--muted);
+    transition: transform 120ms ease;
+  }
+  .index-grid a:hover .index-label svg {
+    color: var(--accent);
+    transform: translateX(2px);
+  }
+  .index-desc {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+</style>

@@ -1,0 +1,20 @@
+---
+layout: ../../layouts/Layout.astro
+title: Form Validation
+---
+
+import ContactFormDemo from '../../components/demos/ContactFormDemo.astro';
+import SourceCard from '../../components/SourceCard.astro';
+
+The form is `novalidate` — no native HTML validation. The real rules live
+in a Zod schema on the server. `@post(…, {contentType: 'form'})` submits
+the fields as form data; on failure the endpoint re-renders the same
+`<ContactForm/>` component with the submitted values and per-field errors
+(`aria-invalid` + `aria-describedby` wired up), and on success it
+re-renders it in the thanks state. One component, three states, written
+once.
+
+<ContactFormDemo />
+
+<SourceCard label="The shared component" file="src/components/ContactForm.astro" />
+<SourceCard label="The endpoint" file="src/pages/api/contact.ts" />

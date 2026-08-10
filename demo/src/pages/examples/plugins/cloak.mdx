@@ -1,0 +1,28 @@
+---
+layout: ../../../layouts/Layout.astro
+title: Cloak
+---
+
+import CloakDemo from '../../../components/demos/CloakDemo.astro';
+import SourceCard from '../../../components/SourceCard.astro';
+
+`data-cloak` hides an element until Datastar has initialised, preventing a
+flash of pre-hydration state — content that `data-show` will hide, a
+collapsed [`data-collapse`](/examples/plugins/collapse) panel, and so on.
+The plugin simply removes the attribute when the engine applies plugins to
+the element; a global CSS rule does the hiding.
+
+<CloakDemo />
+
+```html
+<p data-show="$open" data-cloak>Hidden until Datastar boots.</p>
+```
+
+```css
+/* global stylesheet */
+[data-cloak] {
+  display: none !important;
+}
+```
+
+<SourceCard label="The plugin" file="src/datastar/plugins/cloak.ts" />

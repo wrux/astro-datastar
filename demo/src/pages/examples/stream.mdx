@@ -1,0 +1,17 @@
+---
+layout: ../../layouts/Layout.astro
+title: SSE Streaming
+---
+
+import StreamDemo from '../../components/demos/StreamDemo.astro';
+import SourceCard from '../../components/SourceCard.astro';
+
+One `@get` — many updates. The endpoint keeps the response open with
+`sseStream()` and pushes `patchSignals()` (progress %) and
+`patchElements()` (appended log lines) as work happens.
+
+<StreamDemo />
+
+<SourceCard label="The demo" file="src/components/demos/StreamDemo.astro" />
+<SourceCard label="The shared component" file="src/components/JobLog.astro" />
+<SourceCard label="The endpoint" file="src/pages/api/stream.ts" />

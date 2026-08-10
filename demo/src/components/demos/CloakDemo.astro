@@ -1,0 +1,18 @@
+---
+/** data-cloak: no flash of pre-hydration state. */
+---
+
+<section class="demo" data-signals="{open: false}">
+  <h2>No flash of hidden content</h2>
+  <button
+    data-on:click="$open = !$open"
+    data-text="$open ? 'Hide' : 'Show'"
+  >
+    Show
+  </button>
+  <p data-show="$open" data-cloak>
+    This paragraph starts closed. Without <code>data-cloak</code> it would
+    be visible for a moment on page load, before Datastar applies
+    <code>data-show="$open"</code>.
+  </p>
+</section>

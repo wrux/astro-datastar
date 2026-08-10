@@ -1,0 +1,21 @@
+---
+layout: ../../layouts/Layout.astro
+title: Load More
+---
+
+import LoadMoreDemo from '../../components/demos/LoadMoreDemo.astro';
+import SourceCard from '../../components/SourceCard.astro';
+
+export const prerender = false;
+
+The button sends the current `$offset`; the endpoint answers with three SSE
+events: `patchElements` (mode `append`) adds the next batch to `#entries`,
+`patchSignals` advances the offset, and — once everything is loaded —
+`removeElements('#load-more-button')` takes the button away. `?offset=`
+deep-links the already-loaded state.
+
+<LoadMoreDemo />
+
+<SourceCard label="The demo" file="src/components/demos/LoadMoreDemo.astro" />
+<SourceCard label="The shared component" file="src/components/EntryBatch.astro" />
+<SourceCard label="The endpoint" file="src/pages/api/load-more.ts" />

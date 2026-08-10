@@ -1,0 +1,22 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import IndexGrid from '../../components/IndexGrid.astro';
+import { nav } from '../../nav';
+
+const groups = nav.filter((g) => g.label === 'Datastar' || g.label === 'Usage');
+---
+
+<Layout title="Docs">
+  <p>
+    Everything you need to set up <code>@wrux/astro-datastar</code> and build
+    endpoints that answer Datastar requests.
+  </p>
+  {
+    groups.map((group) => (
+      <>
+        <h2>{group.label}</h2>
+        <IndexGrid items={group.items} />
+      </>
+    ))
+  }
+</Layout>

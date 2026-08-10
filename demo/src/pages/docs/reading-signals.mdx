@@ -1,0 +1,48 @@
+---
+layout: ../../layouts/Layout.astro
+title: Reading Signals
+---
+
+`readSignals()` reads the client's payload from a Datastar request,
+whichever way it arrived:
+
+- `@get` encodes the page's signals as the `datastar` query param.
+- `@post` / `@put` / etc. send a JSON body.
+- With `{contentType: 'form'}` the enclosing form's fields are sent as form
+  data instead of signals — preferred for personal data, which shouldn't
+  live in global signals that every request echoes back.
+
+```ts
+import type { APIRoute } from 'astro';
+import { readSignals } from '@wrux/astro-datastar/server';
+
+export const prerender = false;
+
+export const GET: APIRoute = async ({ request }) => {
+  const { q } = await readSignals<{ q: string }>(request);
+  // …
+};
+```
+
+```html
+<!-- form posts send fields, not signals -->
+<form data-on:submit="@post('/api/contact', {contentType: 'form'})">
+  <input name="email" type="email" />
+</form>
+```
+
+Untyped, `readSignals<T>()` just casts — pass a schema as the second
+argument for real runtime [validation](/docs/validation).
+
+## Guarding endpoints
+
+Datastar sends a `datastar-request: true` header; `isDatastarRequest()`
+checks it:
+
+```ts
+import { isDatastarRequest } from '@wrux/astro-datastar/server';
+
+if (!isDatastarRequest(request)) {
+  return new Response(null, { status: 400 });
+}
+```

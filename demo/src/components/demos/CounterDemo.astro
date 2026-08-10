@@ -1,0 +1,23 @@
+---
+/** Signals & bindings: counter. */
+---
+
+<section class="demo" data-signals="{count: 0}">
+  <h2>Counter</h2>
+  <div class="row">
+    <button data-on:click="$count--">−</button>
+    <strong class="count" data-text="$count">0</strong>
+    <button data-on:click="$count++">+</button>
+    <button data-on:click="$count = 0">Reset</button>
+  </div>
+</section>
+
+<style>
+  /* Tabular digits + reserved width: no layout shift when 9 becomes 10. */
+  .count {
+    font-variant-numeric: tabular-nums;
+    display: inline-block;
+    min-width: 3ch;
+    text-align: center;
+  }
+</style>

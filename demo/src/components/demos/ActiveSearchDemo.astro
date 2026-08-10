@@ -1,0 +1,28 @@
+---
+/** Active search demo. Deep link: ?q=… server-renders the filtered list. */
+import SearchResults from '../SearchResults.astro';
+
+const q = Astro.url.searchParams.get('q') ?? '';
+---
+
+<section class="demo" data-signals={`{q: ${JSON.stringify(q)}, _typing: false}`}>
+  <h2>Search towns</h2>
+  <label for="q">Filter</label>
+  <input
+    id="q"
+    type="text"
+    placeholder="e.g. Bristol"
+    data-bind:q
+    data-on:input="$_typing = true"
+    data-on:input__debounce.300ms="@get('/api/search')"
+    data-indicator="_searching"
+  />
+  <div
+    class="ds-busy-fade"
+    data-class:is-typing="$_typing"
+    data-attr:aria-busy="$_searching ? 'true' : 'false'"
+    data-replace-url="'/examples/active-search' + ($q ? '?q=' + encodeURIComponent($q) : '')"
+  >
+    <SearchResults q={q} />
+  </div>
+</section>

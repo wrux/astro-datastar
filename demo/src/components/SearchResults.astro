@@ -14,7 +14,7 @@ const matches = q
   : towns;
 ---
 
-<ul id="results">
+<ul id="results" class="result-list">
   {error && <li class="hint" role="alert">{error}</li>}
   {!error && matches.map((town) => <li>{town}</li>)}
   {!error && matches.length === 0 && <li class="hint">No matches</li>}

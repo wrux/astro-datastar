@@ -1,0 +1,28 @@
+---
+layout: ../../layouts/Layout.astro
+title: Polling
+---
+
+import PollingDemo from '../../components/demos/PollingDemo.astro';
+import RefetchDemo from '../../components/demos/RefetchDemo.astro';
+import SourceCard from '../../components/SourceCard.astro';
+
+`data-init` fetches once on load and `data-on-interval__duration.5s`
+re-fetches every five seconds. The endpoint renders the same
+`<ServerTime/>` component the page used for its loading state; the morph
+swaps it in place.
+
+<PollingDemo />
+
+<RefetchDemo />
+
+```html
+<div data-on:refetch="@get('/api/time')">
+  <button data-on:click="evt.target.dispatchEvent(new CustomEvent('refetch', {bubbles: true}))">
+    Refresh now
+  </button>
+</div>
+```
+
+<SourceCard label="The shared component" file="src/components/ServerTime.astro" />
+<SourceCard label="The endpoint" file="src/pages/api/time.ts" />

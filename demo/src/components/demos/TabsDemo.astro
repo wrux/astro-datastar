@@ -1,0 +1,21 @@
+---
+/** Signals & bindings: class toggling. */
+---
+
+<section class="demo" data-signals="{tab: 'a'}">
+  <h2>Class toggling</h2>
+  <div class="row" role="tablist" aria-label="Class toggling demo">
+    <button role="tab" data-on:click="$tab = 'a'" data-class:active="$tab === 'a'">Tab A</button>
+    <button role="tab" data-on:click="$tab = 'b'" data-class:active="$tab === 'b'">Tab B</button>
+  </div>
+  <p data-show="$tab === 'a'">Panel A</p>
+  <p data-show="$tab === 'b'" data-cloak>Panel B</p>
+</section>
+
+<style>
+  button.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+</style>

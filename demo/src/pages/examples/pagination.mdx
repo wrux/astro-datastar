@@ -1,0 +1,22 @@
+---
+layout: ../../layouts/Layout.astro
+title: Pagination
+---
+
+import PaginationDemo from '../../components/demos/PaginationDemo.astro';
+import SourceCard from '../../components/SourceCard.astro';
+
+export const prerender = false;
+
+Prev/next buttons bake their target offset in server-side, so a click just
+sets `$offset` and re-fetches. The endpoint re-renders the whole
+`#pagination` region — list, buttons (with correct disabled states), and
+page info — with the same Astro component the page used for the initial
+render. `?page=` deep-links, and `data-replace-url` keeps it in sync.
+
+<PaginationDemo />
+
+<SourceCard label="The demo" file="src/components/demos/PaginationDemo.astro" />
+<SourceCard label="The shared component" file="src/components/PaginatedEntries.astro" />
+<SourceCard label="The endpoint" file="src/pages/api/pagination.ts" />
+<SourceCard label="The plugin" file="packages/astro-datastar/src/plugins/replace-url.ts" />

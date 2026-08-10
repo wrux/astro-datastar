@@ -1,0 +1,20 @@
+---
+/** data-collapse: single disclosure panel. */
+---
+
+<section class="demo" data-signals="{hours: false}">
+  <h2>Opening hours</h2>
+  <button
+    data-on:click="$hours = !$hours"
+    data-attr:aria-expanded="$hours ? 'true' : 'false'"
+  >
+    Opening hours
+  </button>
+  <div data-collapse="$hours" data-cloak>
+    <ul>
+      <li>Mon–Fri: 9:00 – 17:30</li>
+      <li>Sat: 10:00 – 16:00</li>
+      <li>Sun: closed</li>
+    </ul>
+  </div>
+</section>

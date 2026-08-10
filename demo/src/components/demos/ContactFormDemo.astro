@@ -1,0 +1,13 @@
+---
+/** Zod-validated contact form demo. */
+import ContactForm from '../ContactForm.astro';
+---
+
+<section class="demo">
+  <h2>Contact form</h2>
+  <ContactForm />
+  <p class="hint">
+    Try submitting empty, or with a bad email — the errors come back from
+    the server as a morphed fragment, values intact.
+  </p>
+</section>

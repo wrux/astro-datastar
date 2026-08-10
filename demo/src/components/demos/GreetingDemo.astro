@@ -1,0 +1,12 @@
+---
+/** Signals & bindings: two-way binding + computed. */
+---
+
+<section class="demo" data-signals="{name: ''}">
+  <h2>Two-way binding + computed</h2>
+  <div data-computed:greeting="$name ? `Hello, ${$name}!` : 'Type your name…'">
+    <label for="name">Name</label>
+    <input id="name" type="text" data-bind:name placeholder="Ada" />
+    <p data-text="$greeting"></p>
+  </div>
+</section>

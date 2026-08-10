@@ -1,0 +1,38 @@
+---
+layout: ../../layouts/Layout.astro
+title: Installation
+---
+
+`@wrux/astro-datastar` is an Astro integration for
+[Datastar](https://data-star.dev) v1.0.2. The bundle is vendored — no CDN
+request, no extra client dependency — and the integration injects one small
+script into every page.
+
+```sh
+npm install @wrux/astro-datastar
+```
+
+```js
+// astro.config.mjs
+import { defineConfig } from 'astro/config';
+import datastar from '@wrux/astro-datastar';
+
+export default defineConfig({
+  integrations: [datastar()],
+});
+```
+
+## What you get
+
+- The full official Datastar plugin set, applied on page load.
+- A minimal `data-replace-url` plugin (upstream's URL syncing moved to the
+  paid Pro tier; ours is a ~10-line effect with the same attribute name).
+- Server helpers for Astro endpoints —
+  [responses](/docs/server-responses), [signal reading](/docs/reading-signals),
+  and [validation](/docs/validation).
+
+## Requirements
+
+- Astro 5 (peer dependency).
+- An adapter (e.g. `@astrojs/node`) for the on-demand API routes that answer
+  Datastar requests; pages themselves can stay static.
