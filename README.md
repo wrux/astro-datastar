@@ -50,7 +50,7 @@ All commands are run from the root of the project, from a terminal:
 | `npm run build`   | Builds the demo site to `demo/dist/`                    |
 | `npm run preview` | Previews the production build locally                   |
 
-The demo deploys automatically to Cloudflare Workers via Workers Builds on every push to `main` (`npm run build` + `npx wrangler deploy` from the repo root).
+The demo deploys automatically to Cloudflare Workers via Workers Builds on every push to `main` (build: `npm run build`, deploy: `cd demo && npx wrangler deploy`).
 
 ## License
 
