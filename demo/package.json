@@ -8,11 +8,12 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.14",
-    "@astrojs/node": "^9.3.0",
+    "@astrojs/cloudflare": "^14.2.0",
+    "@astrojs/mdx": "^7.0.5",
     "@iconify-json/lucide": "^1.2.123",
     "@wrux/astro-datastar": "*",
-    "astro": "^5.13.0",
-    "astro-icon": "^1.1.5"
+    "astro": "^7.2.0",
+    "astro-icon": "^1.1.5",
+    "wrangler": "^4.120.1"
   }
 }
