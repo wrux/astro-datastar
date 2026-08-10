@@ -2,7 +2,7 @@
 
 An [Astro](https://astro.build) integration for [Datastar](https://data-star.dev) — build reactive, server-driven UIs with signals in your HTML and fragments from your endpoints, without shipping a framework island.
 
-**Live demo & docs: [astro-datastar-demo.banburyshire.workers.dev](https://astro-datastar-demo.banburyshire.workers.dev)**
+**Live demo & docs: [astro-datastar.wrux-6a1.workers.dev](https://astro-datastar.wrux-6a1.workers.dev)**
 
 Feel free to fork this project or take code as you please. Contributions are very welcome.
 
@@ -37,7 +37,7 @@ export default defineConfig({
 </section>
 ```
 
-See the [demo site](https://astro-datastar-demo.banburyshire.workers.dev) for the full docs and examples.
+See the [demo site](https://astro-datastar.wrux-6a1.workers.dev) for the full docs and examples.
 
 ## 🧞 Commands
 
