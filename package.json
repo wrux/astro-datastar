@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspace demo",
-    "build": "npm run build --workspace demo && node scripts/emit-deploy-redirect.mjs",
+    "build": "npm run build --workspace demo",
     "preview": "npm run preview --workspace demo"
   }
 }
