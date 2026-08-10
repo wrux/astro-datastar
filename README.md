@@ -1,4 +1,4 @@
-# astro-datastar
+# Astro Datastar Integration
 
 An [Astro](https://astro.build) integration for [Datastar](https://data-star.dev) — build reactive, server-driven UIs with signals in your HTML and fragments from your endpoints, without shipping a framework island.
 
@@ -22,8 +22,8 @@ npm install @wrux/astro-datastar
 
 ```js
 // astro.config.mjs
-import { defineConfig } from 'astro/config';
-import datastar from '@wrux/astro-datastar';
+import { defineConfig } from "astro/config";
+import datastar from "@wrux/astro-datastar";
 
 export default defineConfig({
   integrations: [datastar()],
@@ -43,12 +43,12 @@ See the [demo site](https://astro-datastar.wrux-6a1.workers.dev) for the full do
 
 All commands are run from the root of the project, from a terminal:
 
-| Command           | Action                                                  |
-| :---------------- | :------------------------------------------------------ |
-| `npm install`     | Installs dependencies for the whole workspace           |
-| `npm run dev`     | Starts the demo site at `localhost:4321`                |
-| `npm run build`   | Builds the demo site to `demo/dist/`                    |
-| `npm run preview` | Previews the production build locally                   |
+| Command           | Action                                        |
+| :---------------- | :-------------------------------------------- |
+| `npm install`     | Installs dependencies for the whole workspace |
+| `npm run dev`     | Starts the demo site at `localhost:4321`      |
+| `npm run build`   | Builds the demo site to `demo/dist/`          |
+| `npm run preview` | Previews the production build locally         |
 
 The demo deploys automatically to Cloudflare Workers via Workers Builds on every push to `main` (build: `npm run build`, deploy: `cd demo && npx wrangler deploy`).
 
