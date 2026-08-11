@@ -15,11 +15,30 @@ const { file, label = 'Source' } = Astro.props;
 // Bundle the real sources so the docs can never drift from the code.
 // (Vite requires the options as inline literals.)
 const sources: Record<string, string> = {
-  ...import.meta.glob<string>('../pages/**/*.ts', { query: '?raw', import: 'default', eager: true }),
-  ...import.meta.glob<string>('./**/*.astro', { query: '?raw', import: 'default', eager: true }),
-  ...import.meta.glob<string>('../datastar/**/*.ts', { query: '?raw', import: 'default', eager: true }),
-  ...import.meta.glob<string>('../data/*.ts', { query: '?raw', import: 'default', eager: true }),
-  ...import.meta.glob<string>('../../../packages/astro-datastar/src/plugins/*.ts', { query: '?raw', import: 'default', eager: true }),
+  ...import.meta.glob<string>('../pages/**/*.ts', {
+    query: '?raw',
+    import: 'default',
+    eager: true,
+  }),
+  ...import.meta.glob<string>('./**/*.astro', {
+    query: '?raw',
+    import: 'default',
+    eager: true,
+  }),
+  ...import.meta.glob<string>('../datastar/**/*.ts', {
+    query: '?raw',
+    import: 'default',
+    eager: true,
+  }),
+  ...import.meta.glob<string>('../data/*.ts', {
+    query: '?raw',
+    import: 'default',
+    eager: true,
+  }),
+  ...import.meta.glob<string>(
+    '../../../packages/astro-datastar/src/plugins/*.ts',
+    { query: '?raw', import: 'default', eager: true },
+  ),
 };
 
 // Keys are relative to this file: '../pages/…', './X.astro' for siblings,
@@ -30,7 +49,9 @@ const canonical = (key: string) =>
     .replace(/^\.\.\//, 'src/')
     .replace(/^\.\//, 'src/components/');
 
-const entry = Object.entries(sources).find(([path]) => canonical(path) === file);
+const entry = Object.entries(sources).find(
+  ([path]) => canonical(path) === file,
+);
 if (!entry) throw new Error(`Unknown source file: ${file}`);
 const source = entry[1].trim();
 const lang: BundledLanguage = file.endsWith('.astro') ? 'astro' : 'ts';

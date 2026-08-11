@@ -12,6 +12,13 @@
   "scripts": {
     "dev": "npm run dev --workspace demo",
     "build": "npm run build --workspace demo",
-    "preview": "npm run preview --workspace demo"
+    "preview": "npm run preview --workspace demo",
+    "test": "npm test --workspace @wrux/astro-datastar",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.7"
   }
 }

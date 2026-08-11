@@ -1,6 +1,8 @@
 ---
 /** Contact form shared by the page and /api/contact (pristine, errored, success). */
-export type FieldErrors = Partial<Record<'name' | 'email' | 'message', string[]>>;
+export type FieldErrors = Partial<
+  Record<'name' | 'email' | 'message', string[]>
+>;
 
 interface Props {
   values?: { name?: string; email?: string; message?: string };

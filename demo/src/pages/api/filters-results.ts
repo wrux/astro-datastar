@@ -1,11 +1,11 @@
-import type { APIRoute } from 'astro';
-import { experimental_AstroContainer as AstroContainer } from 'astro/container';
-import type { z } from 'astro/zod';
 import {
   html,
   readSignals,
   SignalsValidationError,
 } from '@wrux/astro-datastar/server';
+import type { APIRoute } from 'astro';
+import { experimental_AstroContainer as AstroContainer } from 'astro/container';
+import type { z } from 'astro/zod';
 import FilterResults from '../../components/FilterResults.astro';
 import { filterSignals } from './filters';
 

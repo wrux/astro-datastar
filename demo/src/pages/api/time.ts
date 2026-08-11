@@ -1,6 +1,6 @@
+import { html } from '@wrux/astro-datastar/server';
 import type { APIRoute } from 'astro';
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
-import { html } from '@wrux/astro-datastar/server';
 import ServerTime from '../../components/ServerTime.astro';
 
 export const prerender = false;
