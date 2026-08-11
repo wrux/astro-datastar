@@ -1,10 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import IndexGrid from '../../components/IndexGrid.astro';
-import { nav } from '../../nav';
+import { navGroup } from '../../nav';
 
-const examples = nav.find((g) => g.label === 'Examples')!;
-const plugins = nav.find((g) => g.label === 'Plugin Examples')!;
+const examples = navGroup('Examples');
+const plugins = navGroup('Plugin Examples');
 ---
 
 <Layout title="Examples">

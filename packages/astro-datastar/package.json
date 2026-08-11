@@ -11,22 +11,57 @@
     "hypermedia",
     "sse"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wrux/astro-datastar.git",
+    "directory": "packages/astro-datastar"
+  },
+  "homepage": "https://github.com/wrux/astro-datastar#readme",
+  "bugs": {
+    "url": "https://github.com/wrux/astro-datastar/issues"
+  },
   "files": [
-    "src",
+    "dist",
     "vendor"
   ],
   "exports": {
-    ".": "./src/index.ts",
-    "./client": "./src/client.ts",
-    "./engine": "./src/engine.ts",
-    "./server": "./src/server.ts",
-    "./plugins/*": "./src/plugins/*.ts",
-    "./loading.css": "./src/loading.css"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "default": "./dist/client.js"
+    },
+    "./engine": {
+      "types": "./dist/engine.d.ts",
+      "default": "./dist/engine.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "default": "./dist/server.js"
+    },
+    "./plugins/*": {
+      "types": "./dist/plugins/*.d.ts",
+      "default": "./dist/plugins/*.js"
+    },
+    "./loading.css": "./dist/loading.css"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && cp src/loading.css dist/loading.css",
+    "dev": "tsc -p tsconfig.json --watch",
+    "prepack": "npm run build",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
     "astro": "^5.0.0 || ^6.0.0 || ^7.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "vitest": "^3.2.7"
   }
 }

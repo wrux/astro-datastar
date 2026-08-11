@@ -1,13 +1,16 @@
+import { html, readSignals } from '@wrux/astro-datastar/server';
 import type { APIRoute } from 'astro';
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { z } from 'astro/zod';
-import { html, readSignals } from '@wrux/astro-datastar/server';
 import ContactForm from '../../components/ContactForm.astro';
 
 export const prerender = false;
 
 const contact = z.object({
-  name: z.string().trim().min(2, 'Please give your name (at least 2 characters).'),
+  name: z
+    .string()
+    .trim()
+    .min(2, 'Please give your name (at least 2 characters).'),
   email: z.string().trim().email('That email address doesn’t look right.'),
   message: z
     .string()
