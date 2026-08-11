@@ -15,7 +15,7 @@
   }
 }
 
-.ds-busy-fade[aria-busy='true'] {
+.ds-busy-fade[aria-busy="true"] {
   opacity: 0.45;
   pointer-events: none;
 }

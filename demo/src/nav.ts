@@ -13,7 +13,8 @@ export const nav: NavGroup[] = [
       {
         href: '/docs/options',
         label: 'Integration Options',
-        description: 'Opt out of global injection, or load your own plugin set.',
+        description:
+          'Opt out of global injection, or load your own plugin set.',
       },
     ],
   },
@@ -73,7 +74,8 @@ export const nav: NavGroup[] = [
       {
         href: '/examples/filters',
         label: 'Filters',
-        description: 'Dependent selects patching controls and results together.',
+        description:
+          'Dependent selects patching controls and results together.',
       },
       {
         href: '/examples/form',
@@ -125,14 +127,20 @@ const itemLabels = new Map(
 );
 
 /** Home / Section / … / Page for the given pathname. */
+/** Look up a nav group by label; throws at build time if it was renamed. */
+export function navGroup(label: string): NavGroup {
+  const group = nav.find((g) => g.label === label);
+  if (!group) throw new Error(`Unknown nav group: ${label}`);
+  return group;
+}
+
 export function breadcrumb(pathname: string): NavItem[] {
   const path = pathname.replace(/\/$/, '') || '/';
   const crumbs: NavItem[] = [{ href: '/', label: 'Home' }];
   const segments = path.split('/').filter(Boolean);
   segments.forEach((segment, i) => {
-    const href = '/' + segments.slice(0, i + 1).join('/');
-    const label =
-      itemLabels.get(href) ?? sectionLabels[segment] ?? segment;
+    const href = `/${segments.slice(0, i + 1).join('/')}`;
+    const label = itemLabels.get(href) ?? sectionLabels[segment] ?? segment;
     crumbs.push({ href, label });
   });
   return crumbs;

@@ -4,7 +4,15 @@
     {
       "name": "demo",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--workspace", "demo", "--", "--port", "4321"],
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--workspace",
+        "demo",
+        "--",
+        "--port",
+        "4321"
+      ],
       "port": 4321
     }
   ]

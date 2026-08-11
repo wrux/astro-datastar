@@ -50,7 +50,9 @@
   "scripts": {
     "build": "tsc -p tsconfig.json && cp src/loading.css dist/loading.css",
     "dev": "tsc -p tsconfig.json --watch",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "publishConfig": {
     "access": "public"
@@ -59,6 +61,7 @@
     "astro": "^5.0.0 || ^6.0.0 || ^7.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "vitest": "^3.2.7"
   }
 }

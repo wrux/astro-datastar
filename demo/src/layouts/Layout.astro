@@ -15,8 +15,16 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const crumbs = breadcrumb(path);
 
 const externalLinks = [
-  { href: 'https://github.com/wrux/astro-datastar', label: 'GitHub', icon: 'lucide:github' },
-  { href: 'https://data-star.dev', label: 'Datastar', icon: 'lucide:external-link' },
+  {
+    href: 'https://github.com/wrux/astro-datastar',
+    label: 'GitHub',
+    icon: 'lucide:github',
+  },
+  {
+    href: 'https://data-star.dev',
+    label: 'Datastar',
+    icon: 'lucide:external-link',
+  },
   { href: 'https://astro.build', label: 'Astro', icon: 'lucide:external-link' },
 ];
 ---
