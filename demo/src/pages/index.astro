@@ -21,17 +21,16 @@ export const GET: APIRoute = async ({ request }) => {
 
 <Layout title="Astro + Datastar">
   <p>
-    <a href="https://github.com/wrux/astro-datastar">
-      <code>@wrux/astro-datastar</code></a>
-    is an <a href="https://astro.build">Astro</a> integration for
-    <a href="https://data-star.dev">Datastar</a> v1.0.2 (vendored bundle — no
-    CDN request), plus server helpers for answering Datastar requests from
+    <a href="https://github.com/wrux/astro-datastar"><code>@wrux/astro-datastar</code></a> is
+    an <a href="https://astro.build">Astro</a> integration
+    for <a href="https://data-star.dev">Datastar</a> v1.0.2 (vendored bundle —
+    no CDN request), plus server helpers for answering Datastar requests from
     Astro endpoints and a minimal <code>data-replace-url</code> plugin.
   </p>
   <p>
     Reactive <em>signals</em> declared in HTML attributes
-    (<code>data-signals</code>, <code>data-bind:*</code>,
-    <code>data-text</code>, <code>data-show</code>…) plus backend actions
+    (<code>data-signals</code>, <code>data-bind:*</code>, <code>data-text</code>, <code>data-show</code>…)
+    plus backend actions
     (<code>@get</code>, <code>@post</code>…) whose HTML responses are morphed
     into the page by element id. No client framework, no islands — the
     server renders Astro components, Datastar patches them in.

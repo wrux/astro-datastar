@@ -6,6 +6,9 @@
     "packages/*",
     "demo"
   ],
+  "overrides": {
+    "@iconify/utils": "^3.1.4"
+  },
   "scripts": {
     "dev": "npm run dev --workspace demo",
     "build": "npm run build --workspace demo",
