@@ -14,6 +14,7 @@
 
 /* Pairs with the app's data-cloak plugin (src/datastar/plugins/cloak.ts). */
 [data-cloak] {
+  /* biome-ignore lint/complexity/noImportantStyles: cloak must beat any display rule until Datastar removes the attribute */
   display: none !important;
 }
 

@@ -127,12 +127,19 @@ const itemLabels = new Map(
 );
 
 /** Home / Section / … / Page for the given pathname. */
+/** Look up a nav group by label; throws at build time if it was renamed. */
+export function navGroup(label: string): NavGroup {
+  const group = nav.find((g) => g.label === label);
+  if (!group) throw new Error(`Unknown nav group: ${label}`);
+  return group;
+}
+
 export function breadcrumb(pathname: string): NavItem[] {
   const path = pathname.replace(/\/$/, '') || '/';
   const crumbs: NavItem[] = [{ href: '/', label: 'Home' }];
   const segments = path.split('/').filter(Boolean);
   segments.forEach((segment, i) => {
-    const href = '/' + segments.slice(0, i + 1).join('/');
+    const href = `/${segments.slice(0, i + 1).join('/')}`;
     const label = itemLabels.get(href) ?? sectionLabels[segment] ?? segment;
     crumbs.push({ href, label });
   });
