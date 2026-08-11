@@ -267,6 +267,19 @@ h1 {
   margin-top: 0;
 }
 
+/* Body links. */
+main a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  text-underline-offset: 0.2em;
+}
+
+main a:hover {
+  text-decoration-color: var(--accent);
+}
+
 /* Linked section headings (index pages) shouldn't look like body links. */
 main h2 a {
   color: inherit;
