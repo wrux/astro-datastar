@@ -23,8 +23,7 @@ export type DatastarIntegrationOptions = {
 export default function datastar(
   options: DatastarIntegrationOptions = {},
 ): AstroIntegration {
-  const { entrypoint = '@wrux/astro-datastar/client', inject = true } =
-    options;
+  const { entrypoint = '@wrux/astro-datastar/client', inject = true } = options;
 
   return {
     name: '@wrux/astro-datastar',

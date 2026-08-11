@@ -1,6 +1,10 @@
+import {
+  patchElements,
+  patchSignals,
+  sseStream,
+} from '@wrux/astro-datastar/server';
 import type { APIRoute } from 'astro';
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
-import { patchElements, patchSignals, sseStream } from '@wrux/astro-datastar/server';
 import JobLog from '../../components/JobLog.astro';
 
 export const prerender = false;

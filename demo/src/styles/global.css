@@ -36,7 +36,9 @@ aside {
   border-right: 1px solid var(--line);
   padding: 1.25rem 1rem;
   background: var(--panel);
-  transition: margin-left 200ms ease, visibility 0s;
+  transition:
+    margin-left 200ms ease,
+    visibility 0s;
 }
 
 /* Slide out (display:none can't transition); visibility flips after the
@@ -44,7 +46,9 @@ aside {
 aside.collapsed {
   margin-left: -240px;
   visibility: hidden;
-  transition: margin-left 200ms ease, visibility 0s 200ms;
+  transition:
+    margin-left 200ms ease,
+    visibility 0s 200ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -120,7 +124,7 @@ aside nav a:hover {
   color: var(--ink);
 }
 
-aside nav a[aria-current='page'] {
+aside nav a[aria-current="page"] {
   background: var(--bg);
   color: var(--accent);
   font-weight: 600;
@@ -235,7 +239,7 @@ aside nav a[aria-current='page'] {
 }
 
 .breadcrumb li + li::before {
-  content: '/';
+  content: "/";
   margin-right: 0.4rem;
   color: var(--muted);
 }
@@ -249,7 +253,7 @@ aside nav a[aria-current='page'] {
   color: var(--accent);
 }
 
-.breadcrumb [aria-current='page'] {
+.breadcrumb [aria-current="page"] {
   color: var(--ink);
   font-weight: 600;
 }
@@ -312,8 +316,8 @@ button:hover {
   color: var(--accent);
 }
 
-input[type='text'],
-input[type='email'],
+input[type="text"],
+input[type="email"],
 textarea {
   font: inherit;
   padding: 0.45rem 0.6rem;
@@ -385,8 +389,8 @@ progress {
   margin-top: 0.25rem;
 }
 
-input[aria-invalid='true'],
-textarea[aria-invalid='true'] {
+input[aria-invalid="true"],
+textarea[aria-invalid="true"] {
   border-color: #b3261e;
 }
 
@@ -441,12 +445,12 @@ main pre.astro-code {
 }
 
 .job-log:empty::before {
-  content: 'Job output will appear here…';
+  content: "Job output will appear here…";
   color: #5c5e6b;
 }
 
 .job-log li::before {
-  content: '›';
+  content: "›";
   color: #7aa2f7;
   margin-right: 0.6rem;
 }

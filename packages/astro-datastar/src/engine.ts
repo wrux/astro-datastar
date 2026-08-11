@@ -5,6 +5,16 @@
  * the vendored bundle registers its attributes/actions/watchers and applies
  * them to the document as a side effect of being loaded.
  */
+
+export type {
+  ActionContext,
+  ActionPlugin,
+  AttributeContext,
+  AttributePlugin,
+  HTMLOrSVG,
+  Modifiers,
+  Requirement,
+} from '../vendor/datastar.js';
 export {
   action,
   actions,
@@ -22,14 +32,4 @@ export {
   startPeeking,
   stopPeeking,
   watcher,
-} from '../vendor/datastar.js';
-
-export type {
-  ActionContext,
-  ActionPlugin,
-  AttributeContext,
-  AttributePlugin,
-  HTMLOrSVG,
-  Modifiers,
-  Requirement,
 } from '../vendor/datastar.js';
