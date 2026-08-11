@@ -10,8 +10,9 @@
     "@iconify/utils": "^3.1.4"
   },
   "scripts": {
-    "dev": "npm run dev --workspace demo",
-    "build": "npm run build --workspace demo",
+    "build:package": "npm run build --workspace @wrux/astro-datastar",
+    "dev": "npm run build:package && npm run dev --workspace demo",
+    "build": "npm run build:package && npm run build --workspace demo",
     "preview": "npm run preview --workspace demo"
   }
 }
