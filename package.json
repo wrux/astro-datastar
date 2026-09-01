@@ -12,7 +12,7 @@
   "scripts": {
     "build:package": "npm run build --workspace @wrux/astro-datastar",
     "dev": "npm run build:package && npm run dev --workspace demo",
-    "build": "npm run build:package && npm run build --workspace demo",
+    "build": "npm run build --workspace demo",
     "preview": "npm run preview --workspace demo",
     "test": "npm test --workspace @wrux/astro-datastar",
     "test:sdk": "npm run test:sdk --workspace @wrux/astro-datastar",

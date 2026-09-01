@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prebuild": "npm run build --workspace @wrux/astro-datastar",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview"
