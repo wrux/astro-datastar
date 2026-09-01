@@ -34,7 +34,12 @@ export const GET: APIRoute = async ({ request }) => {
 ```
 
 Untyped, `readSignals<T>()` just casts — pass a schema as the second
-argument for real runtime [validation](/docs/validation).
+argument for real runtime [validation](/docs/validation). Malformed JSON
+throws a `SignalsParseError`; `err.response()` gives you a ready 400.
+
+`readSignals` is also available as `ServerSentEventGenerator.readSignals`,
+as the [Datastar SDK spec](https://github.com/starfederation/datastar/blob/develop/sdk/ADR.md)
+names it.
 
 ## Guarding endpoints
 

@@ -1,8 +1,8 @@
 {
   "name": "@wrux/astro-datastar",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
-  "description": "Astro integration for Datastar (vendored v1.0.2 bundle) with server helpers and a replace-url plugin",
+  "description": "Astro integration for Datastar (vendored v1.0.2 bundle) implementing the Datastar SDK spec: ServerSentEventGenerator, readSignals, plus Astro endpoint helpers and a replace-url plugin",
   "license": "MIT",
   "keywords": [
     "astro",
@@ -52,7 +52,8 @@
     "dev": "tsc -p tsconfig.json --watch",
     "prepack": "npm run build",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:sdk": "npm run build && node sdk-tests/run.mjs"
   },
   "publishConfig": {
     "access": "public",

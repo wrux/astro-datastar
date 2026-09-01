@@ -30,9 +30,24 @@ export const GET: APIRoute = async ({ request }) => {
 ## SSE events
 
 For anything a plain morph can't express — patching signals, selector
-targeting, append/prepend/remove modes — build events with
-`patchElements()`, `patchSignals()`, and `removeElements()`, and answer
-with `sse()`:
+targeting, append/prepend/remove modes, running a script — use SSE events.
+The `server` export implements the
+[Datastar SDK spec](https://github.com/starfederation/datastar/blob/develop/sdk/ADR.md)
+and passes the official SDK test suite, so the event methods are the ones
+every Datastar SDK has:
+
+| Method | Does |
+| :-- | :-- |
+| `patchElements(html, { selector, mode, useViewTransition, namespace })` | Patch elements into the DOM (`mode`: `outer`, `inner`, `replace`, `prepend`, `append`, `before`, `after`, `remove`) |
+| `removeElements(selector, { useViewTransition })` | Remove everything matching a selector |
+| `patchSignals(objectOrJson, { onlyIfMissing })` | Merge-patch signals (RFC 7386, `null` removes a key) |
+| `removeSignals(paths)` | Remove signals by (dotted) path |
+| `executeScript(js, { autoRemove, attributes })` | Run JavaScript in the browser |
+
+Every method also takes `eventId` and `retryDuration`.
+
+For a finite batch, build events with the plain functions and answer with
+`sse()`:
 
 ```ts
 import { patchElements, patchSignals, removeElements, sse } from '@wrux/astro-datastar/server';
@@ -46,17 +61,25 @@ return sse(
 
 ## Streaming
 
-`sseStream()` keeps one response open and sends events as work happens —
-see the [streaming example](/examples/stream):
+`sseStream()` (alias of `ServerSentEventGenerator.stream()`) keeps one
+response open and sends events as work happens — see the
+[streaming example](/examples/stream). The callback receives a
+`ServerSentEventGenerator`; the response closes when the callback resolves
+or the client disconnects:
 
 ```ts
-import { patchElements, patchSignals, sseStream } from '@wrux/astro-datastar/server';
+import { sseStream } from '@wrux/astro-datastar/server';
 
 return sseStream(async (stream) => {
   for (const [i, step] of steps.entries()) {
     await doWork(step);
-    stream.send(patchSignals({ progress: (i + 1) / steps.length }));
-    stream.send(patchElements(line, { selector: '#log', mode: 'append' }));
+    stream.patchSignals({ progress: (i + 1) / steps.length });
+    stream.patchElements(line, { selector: '#log', mode: 'append' });
   }
 });
 ```
+
+Pass `{ keepalive: true }` to keep the response open after the callback
+returns (end it with `stream.close()`), and `{ onError }` to handle errors
+thrown by the callback. `stream.closed` resolves when the client leaves, and
+sends after that are dropped.

@@ -53,6 +53,14 @@ region fades and ignores pointer events while a request is in flight.
 
 ## Server helpers (Astro endpoints)
 
+The `server` export implements the [Datastar SDK
+spec](https://github.com/starfederation/datastar/blob/develop/sdk/ADR.md)
+(`ServerSentEventGenerator`, `readSignals`) and passes the official
+[SDK test suite](https://github.com/starfederation/datastar/tree/develop/sdk/tests).
+On top of that it adds Astro-flavoured sugar: `html()`, `sse()`,
+`sseStream()`, event builders that return strings, and Standard Schema
+validation.
+
 With Datastar 1.0 the common case is plain `text/html`: top-level elements
 in the response are morphed into the DOM by id, so a fragment is just a
 rendered partial.
@@ -72,7 +80,8 @@ export const GET: APIRoute = async ({ request }) => {
 `readSignals()` understands all three client payloads: the `datastar` query
 param on `@get`, JSON bodies on other verbs, and form bodies when the action
 used `{contentType: 'form'}` (preferred for personal data, which should not
-live in global signals).
+live in global signals). Malformed JSON throws `SignalsParseError`, which
+has a `.response()` shortcut for a 400.
 
 ### Runtime validation
 
@@ -98,10 +107,58 @@ export const GET: APIRoute = async ({ request }) => {
 };
 ```
 
+### SSE events
+
 For anything a plain morph can't express — patching signals, selector
-targeting, append/prepend/remove modes, or streaming several updates over
-one response — build SSE events and answer with `sse()` (finite) or
-`sseStream()` (long-lived):
+targeting, append/prepend/remove modes, running a script, or streaming
+several updates over one response — use SSE events. The
+`ServerSentEventGenerator` owns an SSE `Response` (spec headers:
+`Cache-Control: no-cache`, `Content-Type: text/event-stream`,
+`Connection: keep-alive`) and flushes each event as it is sent. Astro
+endpoints *return* responses, so you create one with
+`ServerSentEventGenerator.stream()`, or its alias `sseStream()`:
+
+```ts
+import { sseStream } from '@wrux/astro-datastar/server';
+
+export const GET: APIRoute = async () => {
+  return sseStream(async (stream) => {
+    stream.patchSignals({ progress: 0 });
+    for (const [i, step] of steps.entries()) {
+      await doWork(step);
+      stream.patchSignals({ progress: (i + 1) / steps.length });
+      stream.patchElements(`<li>${step}</li>`, {
+        selector: '#log',
+        mode: 'append',
+      });
+    }
+    stream.removeElements('#spinner');
+    stream.executeScript("console.log('done')");
+  });
+};
+```
+
+The response closes when the callback resolves, or when the client
+disconnects (`stream.closed` resolves; later sends are dropped). Pass
+`{ keepalive: true }` to keep it open until you call `stream.close()`, and
+`{ onError }` to handle errors thrown by the callback instead of failing
+the response.
+
+Methods, matching the spec (every one also accepts `eventId` and
+`retryDuration`):
+
+| Method | Event | Options |
+| :-- | :-- | :-- |
+| `patchElements(html, opts)` | `datastar-patch-elements` | `selector`, `mode` (`outer` default, `inner`, `replace`, `prepend`, `append`, `before`, `after`, `remove`), `useViewTransition`, `namespace` (`html`, `svg`, `mathml`) |
+| `removeElements(selector, opts)` | `datastar-patch-elements` (mode `remove`) | `useViewTransition` |
+| `patchSignals(objectOrJson, opts)` | `datastar-patch-signals` (RFC 7386 merge patch; `null` removes) | `onlyIfMissing` |
+| `removeSignals(paths, opts)` | `datastar-patch-signals` with `null`s (`'user.email'` nests) | |
+| `executeScript(js, opts)` | `datastar-patch-elements` appending a `<script>` to `body` | `autoRemove` (default true), `attributes` |
+| `send(eventType, dataLines, opts)` | any | raw access to the unified sender |
+
+For a finite batch you don't need a stream: the same functions exist as
+plain builders that return the serialised event, and `sse()` joins them
+into a response:
 
 ```ts
 import {
@@ -109,27 +166,23 @@ import {
   patchSignals,
   removeElements,
   sse,
-  sseStream,
 } from '@wrux/astro-datastar/server';
 
-// Finite batch:
 return sse(
   patchElements('<li>New item</li>', { selector: '#list', mode: 'append' }),
   patchSignals({ count: 5 }),
+  removeElements('#load-more'),
 );
-
-// Long-running job:
-return sseStream(async (stream) => {
-  for (const [i, step] of steps.entries()) {
-    await doWork(step);
-    stream.send(patchSignals({ progress: (i + 1) / steps.length }));
-    stream.send(patchElements(`<li>${step}</li>`, {
-      selector: '#log',
-      mode: 'append',
-    }));
-  }
-});
 ```
+
+The builders also feed a stream directly (`stream.send(patchSignals(…))`),
+which is handy when events are produced elsewhere.
+
+### Conformance tests
+
+`npm run test:sdk` builds the package, starts `sdk-tests/server.mjs` on
+port 7331 and runs the official Go suite against it (needs Go ≥1.21; the
+required toolchain is downloaded on demand). CI runs it on every push.
 
 ## Re-fetching
 

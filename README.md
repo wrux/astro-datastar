@@ -9,7 +9,8 @@ Feel free to fork this project or take code as you please. Contributions are ver
 ## What's in the box
 
 - `@wrux/astro-datastar` — the integration ([packages/astro-datastar](packages/astro-datastar)). Vendored Datastar v1 bundle (no CDN request), injected site-wide by default, with:
-  - Server helpers for Astro endpoints: `html()`, `sse()`, `sseStream()`, `patchElements()`, `patchSignals()`, `removeElements()`, `readSignals()` (with [Standard Schema](https://standardschema.dev) validation — Zod, Valibot, ArkType…)
+  - A [Datastar SDK](https://github.com/starfederation/datastar/blob/develop/sdk/ADR.md) implementation for Astro endpoints — `ServerSentEventGenerator` (`patchElements`, `patchSignals`, `removeElements`, `removeSignals`, `executeScript`) and `readSignals()` — validated against the official SDK test suite
+  - Astro sugar on top: `html()`, `sse()`, `sseStream()`, string event builders, and [Standard Schema](https://standardschema.dev) validation for signals (Zod, Valibot, ArkType…)
   - A `data-replace-url` attribute plugin, and an `engine` export for writing your own plugins
   - `loading.css` helpers for request indicators and busy fades
 - `demo/` — the docs site with live examples (active search, pagination, SSE streaming, Zod-validated forms, custom plugins…), deployed to [Cloudflare Workers](https://workers.cloudflare.com)
@@ -49,6 +50,8 @@ All commands are run from the root of the project, from a terminal:
 | `npm run dev`     | Starts the demo site at `localhost:4321`      |
 | `npm run build`   | Builds the demo site to `demo/dist/`          |
 | `npm run preview` | Previews the production build locally         |
+| `npm test`        | Runs the package unit tests                   |
+| `npm run test:sdk`| Runs the official Datastar SDK conformance suite (needs Go) |
 
 The demo deploys automatically to Cloudflare Workers via Workers Builds on every push to `main` (build: `npm run build`, deploy: `cd demo && npx wrangler deploy`).
 
